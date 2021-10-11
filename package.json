@@ -20,6 +20,7 @@
   },
   "scripts": {
     "dev": "nodemon ./src/index.ts",
+    "db": "mkdir -p db && docker-compose -f docker-compose.yml up",
     "build": "rm -rf && tsc"
   }
 }

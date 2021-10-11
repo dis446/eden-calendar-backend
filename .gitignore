@@ -119,3 +119,6 @@ dist
 
 # Intellij
 .idea/
+
+# Database
+db/

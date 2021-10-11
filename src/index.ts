@@ -4,8 +4,6 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-// CLIENT ID 59800431155-ln856d2lga82pcumns75v4773dddqnpi.apps.googleusercontent.com
-
 dotenv.config();
 
 const app = express();
@@ -15,12 +13,13 @@ app.use(cors());
 app.use(express.json());
 app.use('/auth', authRoutes);
 
+console.debug('Attempting connection to ' + `${process.env.MONGO_URI}`);
 mongoose.connect(`${process.env.MONGO_URI}`);
 
 const db = mongoose.connection;
-db.once('open', () => console.log('Connected to Mongo DB!!'));
+db.once('open', () => console.debug('Connected to Mongo DB!!'));
 db.on('error', (error) => console.error(error));
 
 app.listen(PORT, () =>
-  console.log(`The server is up and running on PORT ${PORT} 🚀`)
+  console.debug(`The server is up and running on PORT ${PORT} 🚀`)
 );
