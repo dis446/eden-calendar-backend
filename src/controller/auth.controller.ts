@@ -8,7 +8,7 @@ const googleClient = new OAuth2Client({
   clientId: clientID
 });
 
-export const authenticateUser = async (req: Request, res: Response) => {
+const authenticateUser = async(req: Request, res: Response) => {
   const {token} = req.body;
 
   const ticket = await googleClient.verifyIdToken({
@@ -17,6 +17,7 @@ export const authenticateUser = async (req: Request, res: Response) => {
   });
 
   const payload = ticket.getPayload();
+  console.debug('Payload from Google Auth: ', payload);
   let user = await User.findOne({email: payload?.email});
   if (!user) {
     user = await new User({
@@ -29,3 +30,5 @@ export const authenticateUser = async (req: Request, res: Response) => {
 
   res.json({user, token});
 };
+
+export default authenticateUser;

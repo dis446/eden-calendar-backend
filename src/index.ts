@@ -7,19 +7,22 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8001;
 
 app.use(cors());
 app.use(express.json());
 app.use('/auth', authRoutes);
 
-console.debug('Attempting connection to ' + `${process.env.MONGO_URI}`);
 mongoose.connect(`${process.env.MONGO_URI}`);
 
 const db = mongoose.connection;
-db.once('open', () => console.debug('Connected to Mongo DB!!'));
-db.on('error', (error) => console.error(error));
+db.once('open', () => {
+  app.listen(PORT, () =>
+    console.debug(`The server is up and running on PORT ${PORT} 🚀`)
+  );
+});
+db.on('error', (error) => {
+  console.error('Failed connection to ' + `${process.env.MONGO_URI}`);
+  console.error(error);
+});
 
-app.listen(PORT, () =>
-  console.debug(`The server is up and running on PORT ${PORT} 🚀`)
-);
